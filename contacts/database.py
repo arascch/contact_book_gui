@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtSql import QSqlDatabase
+from PyQt5.QtSql import QSqlDatabase , QSqlQuery
 
 def createConnection(databasename):
     conncetion = QSqlDatabase.addDatabase("QSQLITE")
@@ -13,4 +13,21 @@ def createConnection(databasename):
 
         )
         return False
+    return True
+
+def _createContentstable():
+    createtablequery = QSqlQuery()
+    return createtablequery.exec(
+        """
+        CREATE TABLE IF NOT EXIST contacts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ,
+            name VARCHAR(40) NOT NULL,
+            job VARCHAR(50),
+            email VARCHAR(40) NOT NULL
+        )
+        """
+    )
+
+def createConnection(databasename):
+    _createContentstable()
     return True
