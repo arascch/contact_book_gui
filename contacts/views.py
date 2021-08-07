@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from .model import ContactModel
 
 class Window(QMainWindow):
 
@@ -18,10 +19,12 @@ class Window(QMainWindow):
         self.setCentralWidget(self.centralWidget)
         self.layout = QHBoxLayout()
         self.centralWidget.setLayout(self.layout)
+        self.ContactsModel =ContactModel()  
         self.setupUI()
     
     def setupUI(self):
         self.table = QTableView()
+        self.table.setModel(self.ContactsModel.model)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.resizeColumnsToContents()
         #buttons
