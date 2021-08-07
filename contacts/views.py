@@ -1,13 +1,19 @@
 from PyQt5.QtWidgets import (
     QAbstractItemView,
+    QDialog,
+    QDialogButtonBox,
+    QFormLayout,
     QHBoxLayout ,
-    QMainWindow , 
+    QLineEdit,
+    QMainWindow ,
+    QMessageBox, 
     QPushButton,
     QTableView,
     QVBoxLayout,
     QWidget,
 )
 from .model import ContactModel
+from PyQt5.QtCore import Qt
 
 class Window(QMainWindow):
 
@@ -41,3 +47,54 @@ class Window(QMainWindow):
         layout.addWidget(self.clearAllButton)
         self.layout.addWidget(self.table)
         self.layout.addLayout(layout)
+
+class AddDialog(QDialog):
+    def __ini__(self , parent=None):
+        super().__init__(parent=parent)
+        self.setWindowTitle("add contact")
+        self.layout = QVBoxLayout()
+        self.setLayout(self.layout)
+        self.data = None
+
+        self.setupUI()
+    
+    def setupUI(self):
+        self.nameField = QLineEdit()
+        self.nameField.setObjectName("Name")
+        self.jobField = QLineEdit()
+        self.jobField.setObjectName("job")
+        self.emailFiled = QLineEdit()
+        self.emailFiled.setObjectName("Email")
+        #datafiled Layout
+        layout = QFormLayout()
+        layout.addRow("name :" , self.nameField)
+        layout.addRow("job :" , self.jobField)
+        layout.addRow("email :" , self.emailFiled)
+        self.layout.addlayout(layout)
+        #add buttons
+        self.buttonsbox = QDialogButtonBox(self)
+        self.buttonsbox.setOrientation(Qt.Horizontal)
+        self.buttonsbox.setStandardButtons(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+        )
+        self.buttonsbox.accepted.connect(self.accept)
+        self.buttonsbox.rejected.connect(self.reject)
+        self.layout.addWidget(self.buttonsbox)
+    
+    def accept(self):
+        self.data = []
+        for field in (self.nameField , self.jobField , self.emailFiled):
+            if not field.text():
+                QMessageBox.critical(
+                    self , 
+                    "Error",
+                    f"You must Provide a contat's{field.objectName()}",
+                )
+                self.data = None
+                return
+            self.data.append(field.text())
+        
+        if not self.data:
+            return
+        
+        super().accept()
