@@ -26,4 +26,8 @@ class ContactModel:
             self.model.setData(self.model.index(rows,column + 1) , field)
         self.model.submitAll()
         self.model.select()
-        
+    
+    def deletContact(self , row ):
+        self.model.removeRow(row)
+        self.model.submitAll()
+        self.model.select()
