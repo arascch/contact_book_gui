@@ -10,9 +10,9 @@ def createConnection(databasename):
             None,
             "RP Contact",
             f"database Error : {conncetion.lastError().text()}",
-
         )
         return False
+        
     return True
 
 def _createContentstable():
