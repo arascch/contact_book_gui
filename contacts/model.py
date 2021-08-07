@@ -1,7 +1,7 @@
 #module provides a model to manage contacts 
 
 from PyQt5.QtCore import Qt 
-from PyQt5.QtSql import QSqlTableModel
+from PyQt5.QtSql import QSql, QSqlTableModel
 
 class ContactModel:
     def __init__(self):
@@ -30,4 +30,11 @@ class ContactModel:
     def deletContact(self , row ):
         self.model.removeRow(row)
         self.model.submitAll()
+        self.model.select()
+    
+    def clearContacts(self):
+        self.model.setEditStrategy(QSqlTableModel.OnManualSubmit)
+        self.model.removeRows(0 , self.model.rowCount())
+        self.model.submitAll()
+        self.model.setEditStrategy(QSqlTableModel.OnFieldChange)
         self.model.select()
