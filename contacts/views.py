@@ -35,6 +35,7 @@ class Window(QMainWindow):
         self.table.resizeColumnsToContents()
         #buttons
         self.addButton = QPushButton("add")
+        self.addButton.clicked.connect(self.openAddDialog)
         self.deleteButton = QPushButton("delete")
         self.clearAllButton = QPushButton("Clear All")
 
@@ -48,6 +49,13 @@ class Window(QMainWindow):
         self.layout.addWidget(self.table)
         self.layout.addLayout(layout)
 
+    def openAddDialog(self):
+        dialog = AddDialog(self)
+        if dialog.exec() == QDialog.Accepted:
+            self.ContactsModel.addContact(dialog.data)
+            self.table.resizeColumnsToContents()
+
+            
 class AddDialog(QDialog):
     def __ini__(self , parent=None):
         super().__init__(parent=parent)
