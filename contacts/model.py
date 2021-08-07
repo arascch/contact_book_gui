@@ -18,3 +18,12 @@ class ContactModel:
         for columnIndex , header in enumerate(headers):
             tableModel.setHeaderData(columnIndex , Qt.Horizontal , header)
         return tableModel
+
+    def addContact(self , data):
+        rows = self.model.rowCount()
+        self.model.insertRow(rows , 1)
+        for column , field in enumerate(data):
+            self.model.setData(self.model.index(rows,column + 1) , field)
+        self.model.submitAll()
+        self.model.select()
+        
