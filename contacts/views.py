@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 from .model import ContactModel
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QMetaEnum, Qt
 
 class Window(QMainWindow):
 
@@ -37,6 +37,7 @@ class Window(QMainWindow):
         self.addButton = QPushButton("add")
         self.addButton.clicked.connect(self.openAddDialog)
         self.deleteButton = QPushButton("delete")
+        self.deleteButton.clicked.connect(self.deleteContact)
         self.clearAllButton = QPushButton("Clear All")
 
         #layout Gui
@@ -54,8 +55,21 @@ class Window(QMainWindow):
         if dialog.exec() == QDialog.Accepted:
             self.ContactsModel.addContact(dialog.data)
             self.table.resizeColumnsToContents()
+    
+    def deleteContact(self):
+        row = self.table.currentIndex().row()
+        if row< 0 :
+            return
+        
+        messageBox = QMessageBox.warning(
+            self , " Warning!" , "do you want to remove the selected contact?",
+            QMessageBox.Ok | QMessageBox.Cancel,
+        )
 
-            
+        if messageBox == QMessageBox.Ok:
+            self.ContactsModel.deletContact(row)
+
+
 class AddDialog(QDialog):
     def __ini__(self , parent=None):
         super().__init__(parent=parent)
